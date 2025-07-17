@@ -11,7 +11,7 @@ ollama serve
 Download any models
 
 ```bash
-ollama run mistral:latest
+ollama pull mistral:latest
 ```
 
 Edit the variables in the `.env` file from `.env.example`

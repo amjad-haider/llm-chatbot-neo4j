@@ -1,9 +1,31 @@
 import streamlit as st
-from llm import llm, embeddings
+from llm import llm, embeddings,manage_neo4j_index,get_embedding_dimension
 from graph import graph
 from langchain_neo4j import Neo4jVector
 
 # Create the Neo4jVector
+
+##Sanity Check
+# Neo4j connection details
+NEO4J_URI = os.getenv("NEO4J_URI")
+NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
+
+try:
+        # 1. Determine the required dimension from the embedding model
+        required_dim = get_embedding_dimension(embeddings)
+        print(f"Using embedding model '{os.getenv("LLM_EMBEDDING_MODEL")}' which requires dimension: {required_dim}")
+        
+        # 2. Connect to Neo4j and manage the index
+        with GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as neo4j_driver:
+            manage_neo4j_index(neo4j_driver, required_dim)
+            
+        # 3. Safely proceed to create your LangChain retriever
+        print("\nIndex management complete. Proceeding with LangChain setup...")
+
+
+except Exception as e:
+    print(f"\nFailed to initialize the vector database: {e}")
 
 
 neo4jvector = Neo4jVector.from_existing_index(

@@ -6,10 +6,6 @@ from langchain_neo4j import Neo4jVector
 # Create the Neo4jVector
 
 ##Sanity Check
-# Neo4j connection details
-NEO4J_URI = os.getenv("NEO4J_URI")
-NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
-NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 try:
         # 1. Determine the required dimension from the embedding model
@@ -17,7 +13,7 @@ try:
         print(f"Using embedding model '{os.getenv("LLM_EMBEDDING_MODEL")}' which requires dimension: {required_dim}")
         
         # 2. Connect to Neo4j and manage the index
-        with GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as neo4j_driver:
+        with GraphDatabase.driver(os.getenv("NEO4J_URI"), auth=(os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))) as neo4j_driver:
             manage_neo4j_index(neo4j_driver, required_dim)
             
         # 3. Safely proceed to create your LangChain retriever

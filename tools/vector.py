@@ -5,7 +5,7 @@ from langchain_neo4j import Neo4jVector
 
 # Create the Neo4jVector
 
-##Sanity Check
+# Sanity Check
 
 try:
         # 1. Determine the required dimension from the embedding model

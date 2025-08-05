@@ -5,6 +5,7 @@ from langchain_neo4j import Neo4jVector
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
 # Create the Neo4jVector
 
 # Sanity Check

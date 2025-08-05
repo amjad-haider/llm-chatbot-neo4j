@@ -34,6 +34,20 @@ MATCH (p:Person)-[r:DIRECTED]->(m:Movie {{title: "Movie Title"}})
 RETURN p.name
 ```
 
+3. For movie titles that begin with "The", move "the" to the end. 
+Example:
+- "The Matrix" becomes "Matrix, The"
+- "The 39 Steps" becomes "39 Steps, The"
+Use the following logic for titles:
+```
+WITH m.title,
+CASE
+WHEN m.title STARTS WITH 'The ' THEN REPLACE(m.title, 'The ', '') + ', The'
+ELSE m.title
+END AS cleanedTitle
+RETURN cleanedTitle
+```
+
 Schema:
 {schema}
 

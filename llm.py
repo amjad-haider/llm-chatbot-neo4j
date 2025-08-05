@@ -78,8 +78,21 @@ def manage_neo4j_index(driver, required_dimension):
                     print(f"Dropping index '{INDEX_NAME}'...")
                     session.run(f"DROP INDEX {INDEX_NAME}")
                     
-                    # Wait a moment for the drop to complete
-                    time.sleep(2) 
+                    # Wait for the index to be fully dropped before recreating
+                    max_wait_seconds = 30
+                    poll_interval = 0.5
+                    waited = 0
+                    while True:
+                        check_result = session.run(
+                            "SHOW INDEXES YIELD name WHERE name = $name",
+                            name=INDEX_NAME,
+                        )
+                        if check_result.single() is None:
+                            break
+                        time.sleep(poll_interval)
+                        waited += poll_interval
+                        if waited >= max_wait_seconds:
+                            raise TimeoutError(f"Timed out waiting for index '{INDEX_NAME}' to be dropped.")
                     
                     # Create the new index
                     print(f"Creating new index '{INDEX_NAME}' with dimension {required_dimension}...")

@@ -2,6 +2,7 @@ import streamlit as st
 from llm import llm, embeddings,manage_neo4j_index,get_embedding_dimension
 from graph import graph
 from langchain_neo4j import Neo4jVector
+from neo4j import GraphDatabase
 from dotenv import load_dotenv
 import os
 

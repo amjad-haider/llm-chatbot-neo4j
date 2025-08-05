@@ -42,7 +42,7 @@ Use the following logic for titles:
 ```
 WITH m.title,
 CASE
-WHEN m.title STARTS WITH 'The ' THEN REPLACE(m.title, 'The ', '') + ', The'
+WHEN m.title STARTS WITH 'The ' THEN SUBSTRING(m.title, 4) + ', The'
 ELSE m.title
 END AS cleanedTitle
 RETURN cleanedTitle

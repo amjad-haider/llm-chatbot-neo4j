@@ -12,16 +12,16 @@ load_dotenv()
 # Sanity Check
 
 try:
-        # 1. Determine the required dimension from the embedding model
-        required_dim = get_embedding_dimension(embeddings)
-        print(f"Using embedding model '{os.getenv("LLM_EMBEDDING_MODEL")}' which requires dimension: {required_dim}")
+    # 1. Determine the required dimension from the embedding model
+    required_dim = get_embedding_dimension(embeddings)
+    print(f"Using embedding model {os.getenv('LLM_EMBEDDING_MODEL')} which requires dimension: {required_dim}")
+    
+    # 2. Connect to Neo4j and manage the index
+    with GraphDatabase.driver(os.getenv("NEO4J_URI"), auth=(os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))) as neo4j_driver:
+        manage_neo4j_index(neo4j_driver, required_dim)
         
-        # 2. Connect to Neo4j and manage the index
-        with GraphDatabase.driver(os.getenv("NEO4J_URI"), auth=(os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))) as neo4j_driver:
-            manage_neo4j_index(neo4j_driver, required_dim)
-            
-        # 3. Safely proceed to create your LangChain retriever
-        print("\nIndex management complete. Proceeding with LangChain setup...")
+    # 3. Safely proceed to create your LangChain retriever
+    print("\nIndex management complete. Proceeding with LangChain setup...")
 
 
 except Exception as e:

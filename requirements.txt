@@ -7,3 +7,4 @@ langchain-neo4j==0.1.1
 langchain-ollama
 python-dotenv
 langchain-groq
+langchain-nomic

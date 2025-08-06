@@ -3,6 +3,7 @@ import streamlit as st
 from langchain_ollama import ChatOllama
 from langchain_ollama import OllamaEmbeddings
 # from langchain_groq import ChatGroq
+# from langchain_nomic import NomicEmbeddings
 import time
 from dotenv import load_dotenv
 import os
@@ -22,6 +23,8 @@ llm = ChatOllama(
 # Create the Embedding model
 embeddings = OllamaEmbeddings(model=os.getenv("LLM_EMBEDDING_MODEL"))
 
+# Embedding via Nomic API
+# embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
 
 # Vector Index Configuration
 INDEX_NAME = "moviePlots"
